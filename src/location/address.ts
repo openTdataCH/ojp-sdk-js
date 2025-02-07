@@ -28,14 +28,14 @@ export class Address {
       return null;
     }
 
-    const addressCode = addressTreeNode.findTextFromChildNamed('AddressCode');
+    const addressCode = addressTreeNode.findTextFromChildNamed('PublicCode');
     if (addressCode === null) {
       return null
     }
 
     const address = new Address(addressCode);
 
-    address.addressName = addressTreeNode.findTextFromChildNamed('AddressName/Text')
+    address.addressName = addressTreeNode.findTextFromChildNamed('Name/Text')
 
     address.topographicPlaceRef = addressTreeNode.findTextFromChildNamed('TopographicPlaceRef');
     address.topographicPlaceName = addressTreeNode.findTextFromChildNamed('TopographicPlaceName');

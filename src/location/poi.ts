@@ -59,8 +59,7 @@ export class PointOfInterest {
 
     if (category === null) {
       console.error('PointOfInterest.initWithLocationTreeNode error - no category');
-      console.log(locationTreeNode);
-      return null;
+      category = 'none';
     }
 
     const poi = new PointOfInterest(code, name, category, subCategory, categoryTags);

@@ -19,7 +19,7 @@ export class JourneyService {
   public operatingDayRef: string | null;
 
   public ptMode: PublicTransportMode;
-  public agencyID: string;
+  public agencyCode: string;
   public originStopPlace: StopPlace | null;
   public destinationStopPlace: StopPlace | null;
   public serviceLineNumber: string | null
@@ -34,14 +34,14 @@ export class JourneyService {
   public hasDeviation: boolean | null
   public isUnplanned: boolean | null
 
-  constructor(journeyRef: string, ptMode: PublicTransportMode, agencyID: string) {
+  constructor(journeyRef: string, ptMode: PublicTransportMode, agencyCode: string) {
     this.journeyRef = journeyRef;
     this.lineRef = null;
     this.operatingDayRef = null;
     this.directionRef = null;
 
     this.ptMode = ptMode;
-    this.agencyID = agencyID;
+    this.agencyCode = agencyCode;
     
     this.originStopPlace = null;
     this.destinationStopPlace = null;
@@ -68,8 +68,8 @@ export class JourneyService {
     const ptMode = PublicTransportMode.initWithServiceTreeNode(serviceTreeNode);
 
     
-    const agencyID = (() => {
-      const ojpAgencyId = serviceTreeNode.findTextFromChildNamed('OperatorRef');
+    const agencyCode = (() => {
+      const ojpAgencyId = serviceTreeNode.findTextFromChildNamed('siri:OperatorRef');
       if (ojpAgencyId === null) {
         return 'n/a OperatorRef'
       }
@@ -81,7 +81,7 @@ export class JourneyService {
       return null;
     }
 
-    const legService = new JourneyService(journeyRef, ptMode, agencyID);
+    const legService = new JourneyService(journeyRef, ptMode, agencyCode);
 
     legService.lineRef = serviceTreeNode.findTextFromChildNamed('siri:LineRef');
     legService.directionRef = serviceTreeNode.findTextFromChildNamed('siri:DirectionRef');
@@ -90,17 +90,20 @@ export class JourneyService {
     legService.originStopPlace = StopPlace.initWithServiceTreeNode(serviceTreeNode, 'Origin');
     legService.destinationStopPlace = StopPlace.initWithServiceTreeNode(serviceTreeNode, 'Destination');
 
-    legService.serviceLineNumber = serviceTreeNode.findTextFromChildNamed('PublishedLineName/Text');
-    legService.journeyNumber = treeNode.findTextFromChildNamed('Extension/PublishedJourneyNumber/Text');
+    legService.serviceLineNumber = serviceTreeNode.findTextFromChildNamed('PublishedServiceName/Text');
+    legService.journeyNumber = serviceTreeNode.findTextFromChildNamed('TrainNumber');
 
     legService.siriSituationIds = [];
-    const situationFullRefTreeNodes = serviceTreeNode.findChildrenNamed('SituationFullRef');
-    situationFullRefTreeNodes.forEach(situationFullRefTreeNode => {
-      const situationNumber = situationFullRefTreeNode.findTextFromChildNamed('siri:SituationNumber');
-      if (situationNumber) {
-        legService.siriSituationIds.push(situationNumber);
-      }
-    }); 
+    const situationsContainerNode = serviceTreeNode.findChildNamed('SituationFullRefs');
+    if (situationsContainerNode) {
+      const situationFullRefTreeNodes = situationsContainerNode.findChildrenNamed('SituationFullRef');
+      situationFullRefTreeNodes.forEach(situationFullRefTreeNode => {
+        const situationNumber = situationFullRefTreeNode.findTextFromChildNamed('siri:SituationNumber');
+        if (situationNumber) {
+          legService.siriSituationIds.push(situationNumber);
+        }
+      });  
+    }
 
     legService.serviceAttributes = {};
     serviceTreeNode.findChildrenNamed('Attribute').forEach(attributeTreeNode => {
@@ -116,7 +119,7 @@ export class JourneyService {
         code = code.replace(/A_*/, '');
       }
 
-      const text = attributeTreeNode.findTextFromChildNamed('Text/Text');
+      const text = attributeTreeNode.findTextFromChildNamed('UserText/Text');
 
       if (text === null) {
         console.error('ERROR - cant find code/text for Attribute');
@@ -186,7 +189,7 @@ export class JourneyService {
       nameParts.push(this.ptMode.shortName ?? this.ptMode.ptMode)
     }
 
-    nameParts.push('(' + this.agencyID + ')')
+    nameParts.push('(' + this.agencyCode + ')')
 
     return nameParts.join(' ')
   }
@@ -209,7 +212,7 @@ export class JourneyService {
       serviceNode.ele('ojp:PublishedLineName').ele('ojp:Text', this.serviceLineNumber);
     }
 
-    let agencyID_s = this.agencyID;
+    let agencyID_s = this.agencyCode;
     if (!agencyID_s.startsWith('ojp:')) {
       agencyID_s = 'ojp:' + agencyID_s;
     }

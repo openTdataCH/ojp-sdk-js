@@ -106,8 +106,8 @@ class TrackSection {
   }
 
   public static initWithTreeNode(treeNode: TreeNode): TrackSection | null {
-    const trackStartTreeNode = treeNode.findChildNamed('TrackStart');
-    const trackEndTreeNode = treeNode.findChildNamed('TrackEnd');
+    const trackStartTreeNode = treeNode.findChildNamed('TrackSectionStart');
+    const trackEndTreeNode = treeNode.findChildNamed('TrackSectionEnd');
 
     if (!(trackStartTreeNode && trackEndTreeNode)) {
       return null;

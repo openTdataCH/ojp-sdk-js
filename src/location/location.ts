@@ -45,7 +45,7 @@ export class Location {
     
     location.address = Address.initWithLocationTreeNode(treeNode);
     location.geoPosition = GeoPosition.initWithLocationTreeNode(treeNode);
-    location.locationName = treeNode.findTextFromChildNamed('LocationName/Text');
+    location.locationName = treeNode.findTextFromChildNamed('Name/Text');
     location.poi = PointOfInterest.initWithLocationTreeNode(treeNode);
     location.stopPlace = StopPlace.initWithLocationTreeNode(treeNode);
     location.topographicPlace = TopographicPlace.initWithLocationTreeNode(treeNode);
@@ -56,7 +56,7 @@ export class Location {
   }
 
   public static initWithLocationResultTreeNode(locationResultTreeNode: TreeNode): Location | null {
-    const locationTreeNode = locationResultTreeNode.findChildNamed('Location');
+    const locationTreeNode = locationResultTreeNode.findChildNamed('Place');
     if (locationTreeNode === null) {
       return null;
     }

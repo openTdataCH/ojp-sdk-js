@@ -17,7 +17,7 @@ export class LocationInformationParser extends BaseParser {
   }
 
   protected onCloseTag(nodeName: string): void {
-    if (nodeName === 'Location' && this.currentNode.parentName === 'OJPLocationInformationDelivery') {
+    if (nodeName === 'PlaceResult' && this.currentNode.parentName === 'OJPLocationInformationDelivery') {
       const location = Location.initWithLocationResultTreeNode(
         this.currentNode
       );

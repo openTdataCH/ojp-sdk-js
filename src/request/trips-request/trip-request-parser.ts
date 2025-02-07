@@ -74,7 +74,7 @@ export class TripRequestParser extends BaseParser {
       if (placesTreeNode) {
         this.mapContextLocations = {};
             
-        const locationTreeNodes = placesTreeNode.findChildrenNamed('Location');
+        const locationTreeNodes = placesTreeNode.findChildrenNamed('Place');
         locationTreeNodes.forEach(locationTreeNode => {
           const location = Location.initWithTreeNode(locationTreeNode);
           const stopPlaceRef = location.stopPlace?.stopPlaceRef ?? null;

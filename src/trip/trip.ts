@@ -20,11 +20,11 @@ export class Trip {
     this.id = tripID;
     this.legs = legs;
     this.stats = tripStats
-    this.tripFareResults = []
+    this.tripFareResults = [];
   }
 
   public static initFromTreeNode(treeNode: TreeNode): Trip | null {
-    let tripId = treeNode.findTextFromChildNamed('TripId');
+    let tripId = treeNode.findTextFromChildNamed('Id');
 
     // HACK for solution demo, backend sometimes delivers Trip with empty Id
     // TODO: revert when backend is ready, DONT merge to main
@@ -59,7 +59,7 @@ export class Trip {
     const legs: TripLeg[] = [];
     let tripLegsTotalDistance = 0;
 
-    const tripLegTreeNodes = treeNode.findChildrenNamed('TripLeg');
+    const tripLegTreeNodes = treeNode.findChildrenNamed('Leg');
     tripLegTreeNodes.forEach(tripLegTreeNode => {
       const tripLeg = TripLegFactory.initWithTreeNode(tripLegTreeNode);
       if (tripLeg === null) {

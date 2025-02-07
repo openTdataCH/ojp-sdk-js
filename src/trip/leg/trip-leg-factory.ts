@@ -5,7 +5,7 @@ import { TripTimedLeg } from "./trip-timed-leg";
 
 export class TripLegFactory {
   public static initWithTreeNode(treeNode: TreeNode): TripContinousLeg | TripTimedLeg | null {
-    const legID_string = treeNode.findTextFromChildNamed('LegId');
+    const legID_string = treeNode.findTextFromChildNamed('Id');
     if (legID_string === null) {
       return null;
     }

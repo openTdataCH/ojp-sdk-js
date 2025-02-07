@@ -13,7 +13,7 @@ export const DEBUG_LEVEL: DEBUG_LEVEL_Type = (() => {
 })();
 
 type OJP_VERSION_Type = '1.0' | '2.0';
-export const OJP_VERSION: OJP_VERSION_Type = '1.0';
+export const OJP_VERSION: OJP_VERSION_Type = '2.0';
 export const SDK_VERSION = '0.16.1';
 export const IS_NODE_CLI = typeof process !== 'undefined' && process.versions && process.versions.node;
 

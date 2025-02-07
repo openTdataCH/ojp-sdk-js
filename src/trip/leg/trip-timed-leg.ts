@@ -54,7 +54,7 @@ export class TripTimedLeg extends TripLeg {
     }
 
     const intermediateStopPoints: StopPoint[] = []
-    const intermediaryStopTreeNodes: TreeNode[] = treeNode.findChildrenNamed('LegIntermediates');
+    const intermediaryStopTreeNodes: TreeNode[] = treeNode.findChildrenNamed('LegIntermediate');
     intermediaryStopTreeNodes.forEach(intermediaryStopTreeNode => {
       const stopPoint = StopPoint.initWithTreeNode(intermediaryStopTreeNode, 'Intermediate');
       if (stopPoint) {
